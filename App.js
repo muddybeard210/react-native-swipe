@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, ScrollView } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Deck from "./src/Deck";
 import { Card, Button } from "react-native-elements";
 import DATA from "./src/dummyData";
@@ -23,13 +23,9 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={styles.container}
-        maximumZoomScale={50}
-        minimumZoomScale={1}
-      >
+      <View style={styles.container}>
         <Deck style={styles.deck} data={DATA} renderCard={this.renderCard} />
-      </ScrollView>
+      </View>
     );
   }
 }
