@@ -9,17 +9,20 @@ class Deck extends Component {
   panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (event, gesture) => {
-      // this.position = gesture.
       this.position.setValue({ x: gesture.dx, y: gesture.dy });
     },
     onPanResponderRelease: () => {}
   });
 
   getCardStyle = () => {
-    console.log("doodle");
+    const position = this.position;
+    const rotate = position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ["-120deg", "0deg", "120deg"]
+    });
     return {
-      ...this.position.getLayout(),
-      transform: [{ rotate: "45deg" }]
+      ...position.getLayout(),
+      transform: [{ rotate: rotate }]
     };
   };
 
