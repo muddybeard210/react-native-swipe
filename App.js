@@ -8,7 +8,7 @@ export default class App extends React.Component {
   renderCard = item => {
     return (
       <Card key={item.id} title={item.text} image={{ uri: item.uri }}>
-        <Text style={{ marginBottom: 10 }}>
+        <Text style={{ marginBottom: 10, padding: 10 }}>
           I can customize the Card further.
         </Text>
         <Button
