@@ -15,12 +15,21 @@ class Deck extends Component {
     onPanResponderRelease: () => {}
   });
 
+  getCardStyle = () => {
+    console.log("doodle");
+    return {
+      ...this.position.getLayout(),
+      transform: [{ rotate: "45deg" }]
+    };
+  };
+
   renderCards = () => {
     return this.props.data.map((item, index) => {
       if (index === 0) {
         return (
           <Animated.View
-            style={this.position.getLayout()}
+            key={item.id}
+            style={this.getCardStyle()}
             {...this.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
