@@ -40,6 +40,14 @@ class Deck extends Component {
     }
   });
 
+  componentWillReceiveProps(nextProps) {
+    if (newProps.data !== this.props.data) {
+      this.setState({
+        index: 0
+      });
+    }
+  }
+
   componentWillUpdate() {
     // This next line is specific to android phones
     UIManager.setLayoutAnimationEnabledExperimental &&
