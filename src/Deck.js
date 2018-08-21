@@ -17,9 +17,9 @@ class Deck extends Component {
     },
     onPanResponderRelease: (event, gesture) => {
       if (gesture.dx > SWIPE_THRESHOLD) {
-        this.forceSwipeRight();
+        this.forceSwipe("right");
       } else if (gesture.dx < -SWIPE_THRESHOLD) {
-        console.log("swiped left!");
+        this.forceSwipe("left");
       } else {
         this.resetPosition();
       }
@@ -32,11 +32,12 @@ class Deck extends Component {
     }).start();
   };
 
-  forceSwipeRight = () => {
+  forceSwipe = direction => {
     Animated.timing(this.position, {
-      toValue: { x: SCREEN_WIDTH, y: 0 }
+      toValue: { x: direction === "right" ? SCREEN_WIDTH : -SCREEN_WIDTH, y: 0 }
     }).start();
   };
+
   getCardStyle = () => {
     const position = this.position;
     const rotate = position.x.interpolate({
