@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Animated, PanResponder, Dimensions } from "react-native";
+import {
+  View,
+  Animated,
+  PanResponder,
+  Dimensions,
+  LayoutAnimation,
+  UIManager
+} from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -32,6 +39,15 @@ class Deck extends Component {
       }
     }
   });
+
+  componentWillUpdate() {
+    // This next line is specific to android phones
+    UIManager.setLayoutAnimationEnabledExperimental &&
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+
+    LayoutAnimation.spring();
+  }
+
   resetPosition = () => {
     Animated.spring(this.position, {
       toValue: { x: 0, y: 0 }
@@ -78,28 +94,44 @@ class Deck extends Component {
       return this.props.renderNoMoreCards();
     }
 
-    return this.props.data.map((item, i) => {
-      if (i < this.state.index) {
-        return null;
-      }
-      if (i === this.state.index) {
+    return this.props.data
+      .map((item, i) => {
+        if (i < this.state.index) {
+          return null;
+        }
+        if (i === this.state.index) {
+          return (
+            <Animated.View
+              key={item.id}
+              style={[this.getCardStyle(), styles.cardStyle]}
+              {...this.panResponder.panHandlers}
+            >
+              {this.props.renderCard(item)}
+            </Animated.View>
+          );
+        }
         return (
           <Animated.View
             key={item.id}
-            style={this.getCardStyle()}
-            {...this.panResponder.panHandlers}
+            style={[styles.cardStyle, { top: 10 * (i - this.state.index) }]}
           >
             {this.props.renderCard(item)}
           </Animated.View>
         );
-      }
-      return this.props.renderCard(item);
-    });
+      })
+      .reverse();
   };
 
   render() {
     return <View>{this.renderCards()}</View>;
   }
 }
+
+const styles = {
+  cardStyle: {
+    position: "absolute",
+    width: "100%"
+  }
+};
 
 export default Deck;
